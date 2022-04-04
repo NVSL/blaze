@@ -1,5 +1,5 @@
-#ifndef AGILE_PARAM_H
-#define AGILE_PARAM_H
+#ifndef BLAZE_PARAM_H
+#define BLAZE_PARAM_H
 
 #define CACHE_LINE 64
 
@@ -16,10 +16,10 @@
 // Sparse dense
 #define DENSE_THRESHOLD         0.005
 
-// Prop blocking
+// Binning
 #define BINNING_WORKER_RATIO    0.67
 #define BIN_COUNT               4096
 #define BIN_SHIFT               12
 #define BIN_BUF_SIZE            128
 
-#endif // AGILE_PARAM_H
+#endif // BLAZE_PARAM_H

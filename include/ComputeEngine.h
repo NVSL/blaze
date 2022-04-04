@@ -1,5 +1,5 @@
-#ifndef AGILE_COMPUTE_ENGINE_H
-#define AGILE_COMPUTE_ENGINE_H
+#ifndef BLAZE_COMPUTE_ENGINE_H
+#define BLAZE_COMPUTE_ENGINE_H
 
 #include "galois/Galois.h"
 #include "Type.h"
@@ -8,7 +8,7 @@
 #include "Synchronization.h"
 #include "Queue.h"
 
-namespace agile {
+namespace blaze {
 
 class ComputeEngine {
  public:
@@ -90,6 +90,6 @@ class ComputeEngine {
     std::chrono::time_point<std::chrono::steady_clock>  _time_end;
 };
 
-} // namespace agile
+} // namespace blaze
 
-#endif // AGILE_COMPUTE_ENGINE_H
+#endif // BLAZE_COMPUTE_ENGINE_H

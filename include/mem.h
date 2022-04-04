@@ -1,10 +1,10 @@
-#ifndef AGILE_MEM_H
-#define AGILE_MEM_H
+#ifndef BLAZE_MEM_H
+#define BLAZE_MEM_H
 
 #include <memory>
 #include "pagealloc.h"
 
-namespace agile {
+namespace blaze {
 
 struct pageFreer {
     size_t bytes;
@@ -26,10 +26,10 @@ LAptr largeMalloc(size_t bytes, bool on_pmem=false) {
     if (on_pmem) data = allocPagesPmem(bytes / PAGE_SIZE);
     else                 data = allocPages(bytes / PAGE_SIZE);
     if (!data)
-        AGILE_DIE("Cannot alloate memory");
+        BLAZE_DIE("Cannot alloate memory");
     return LAptr{data, pageFreer{bytes}};
 }
 
-} // namespace agile
+} // namespace blaze
 
-#endif // AGILE_MEM_H
+#endif // BLAZE_MEM_H

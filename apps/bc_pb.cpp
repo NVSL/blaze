@@ -18,7 +18,7 @@
 #include "PageRank.h"
 
 namespace cll = llvm::cl;
-using namespace agile;
+using namespace blaze;
 
 static cll::opt<unsigned int>
     startNode("startNode",

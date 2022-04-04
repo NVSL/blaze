@@ -1,5 +1,5 @@
-#ifndef AGILE_QUEUE_H
-#define AGILE_QUEUE_H
+#ifndef BLAZE_QUEUE_H
+#define BLAZE_QUEUE_H
 
 #include "concurrentqueue/concurrentqueue.h"
 #include "concurrentqueue/blockingconcurrentqueue.h"
@@ -10,6 +10,6 @@ template <typename T>
 using MPMCQueue = moodycamel::ConcurrentQueue<T>;
 
 template <typename T>
-using SPSCQueue = agile::RingBuffer<T>;
+using SPSCQueue = blaze::RingBuffer<T>;
 
-#endif  // AGILE_QUEUE_H
+#endif  // BLAZE_QUEUE_H

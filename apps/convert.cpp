@@ -24,7 +24,7 @@ static cll::opt<bool>
 static cll::opt<std::string>
   inputFilename(cll::Positional, cll::desc("<input file>"), cll::Required);
 
-using namespace agile;
+using namespace blaze;
 
 std::string get_index_file_name(const std::string& input) {
   return input + ".index";

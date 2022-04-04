@@ -1,9 +1,9 @@
-#ifndef AGILE_RING_BUFFER_H
-#define AGILE_RING_BUFFER_H
+#ifndef BLAZE_RING_BUFFER_H
+#define BLAZE_RING_BUFFER_H
 
 #include <xmmintrin.h>
 
-namespace agile {
+namespace blaze {
 
 /*
  * Single writer, single reader ring buffer
@@ -55,6 +55,6 @@ class RingBuffer {
     uint32_t    _tail;
 };
 
-}   // namespace agile
+}   // namespace blaze
 
-#endif // AGILE_RING_BUFFER_H
+#endif // BLAZE_RING_BUFFER_H

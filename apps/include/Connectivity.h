@@ -22,7 +22,7 @@
 
 #include <atomic>
 
-namespace agile {
+namespace blaze {
 /**
  * Intrusive union-find implementation. Users subclass this to get disjoint
  * functionality for the subclass object.
@@ -99,7 +99,7 @@ public:
 };
 
 template <typename Graph>
-void findLargest(Graph& graph, agile::Array<uint32_t>& data) {
+void findLargest(Graph& graph, blaze::Array<uint32_t>& data) {
 
     using ReducerMap =
             galois::GMapPerItemReduce<uint32_t, int, std::plus<int>>;
@@ -153,5 +153,5 @@ void findLargest(Graph& graph, agile::Array<uint32_t>& data) {
               << " (largest component: " << largest.first << ", size: " << largestSize << " [" << ratio << "])\n";
 }
 
-} // namespace agile
+} // namespace blaze
 #endif

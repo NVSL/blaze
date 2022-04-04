@@ -1,11 +1,11 @@
-#ifndef AGILE_WORKLIST_H
-#define AGILE_WORKLIST_H
+#ifndef BLAZE_WORKLIST_H
+#define BLAZE_WORKLIST_H
 
 #include "galois/Galois.h"
 #include "Bitmap.h"
 #include "Set.h"
 
-namespace agile {
+namespace blaze {
 
 template <typename T>
 class CountableBag : public galois::InsertBag<T> {
@@ -178,8 +178,8 @@ class Worklist {
 //template <typename T>
 //using Worklist = galois::InsertBag<T>;
 //template <typename T>
-//using Worklist = agile::CountableBag<T>;
+//using Worklist = blaze::CountableBag<T>;
 
-} // namespace agile
+} // namespace blaze
 
-#endif // AGILE_WORKLIST_H
+#endif // BLAZE_WORKLIST_H

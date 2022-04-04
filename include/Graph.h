@@ -1,5 +1,5 @@
-#ifndef AGILE_GRAPH_H
-#define AGILE_GRAPH_H
+#ifndef BLAZE_GRAPH_H
+#define BLAZE_GRAPH_H
 
 #include <string>
 #include <unordered_map>
@@ -12,7 +12,7 @@
 #include "Bitmap.h"
 #include "Util.h"
 
-namespace agile {
+namespace blaze {
 
 class Graph {
  public:
@@ -334,6 +334,6 @@ class Graph {
     Bitmap**                    _activated_pages;
 };
 
-} // namespace agile
+} // namespace blaze
 
-#endif // AGILE_GRAPH_H
+#endif // BLAZE_GRAPH_H

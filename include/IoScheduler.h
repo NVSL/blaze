@@ -1,5 +1,5 @@
-#ifndef AGILE_IO_SCHEDULER_H
-#define AGILE_IO_SCHEDULER_H
+#ifndef BLAZE_IO_SCHEDULER_H
+#define BLAZE_IO_SCHEDULER_H
 
 #include "Type.h"
 #include "Graph.h"
@@ -9,7 +9,7 @@
 #include "AsyncIo.h"
 #include "IoSync.h"
 
-namespace agile {
+namespace blaze {
 
 class IoScheduler {
  public:
@@ -77,6 +77,6 @@ class IoScheduler {
     }
 };
 
-} // namespace agile
+} // namespace blaze
 
-#endif // AGILE_IO_SCHEDULER_H
+#endif // BLAZE_IO_SCHEDULER_H

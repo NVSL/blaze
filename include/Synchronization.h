@@ -1,5 +1,5 @@
-#ifndef AGILE_SYNCHRONIZATION_H
-#define AGILE_SYNCHRONIZATION_H
+#ifndef BLAZE_SYNCHRONIZATION_H
+#define BLAZE_SYNCHRONIZATION_H
 
 #include "Barrier.h"
 
@@ -61,4 +61,4 @@ class Synchronization {
     std::atomic<int64_t>*   _num_free_pages;
 };
 
-#endif // AGILE_SYNCHRONIZATION_H
+#endif // BLAZE_SYNCHRONIZATION_H

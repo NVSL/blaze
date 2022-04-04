@@ -19,7 +19,7 @@
 #include "Bin.h"
 #include "Param.h"
 
-using namespace agile;
+using namespace blaze;
 namespace cll = llvm::cl;
 
 // All PageRank algorithm variants use the same constants for ease of

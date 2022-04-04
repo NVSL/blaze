@@ -17,7 +17,7 @@
 #include "VertexFilter.h"
 #include "Connectivity.h"
 
-using namespace agile;
+using namespace blaze;
 namespace cll = llvm::cl;
 
 static cll::opt<std::string>

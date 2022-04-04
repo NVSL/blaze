@@ -1,5 +1,5 @@
-#ifndef AGILE_TYPE_H
-#define AGILE_TYPE_H
+#ifndef BLAZE_TYPE_H
+#define BLAZE_TYPE_H
 
 #include <vector>
 #include <map>
@@ -54,4 +54,4 @@ inline bool use_prop_blocking(const FLAGS& flags) {
 
 enum ComputeWorkerRole { NORMAL, BIN, ACCUMULATE };
 
-#endif // AGILE_TYPES_H
+#endif // BLAZE_TYPES_H

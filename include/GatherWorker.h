@@ -1,5 +1,5 @@
-#ifndef AGILE_ACCUMULATE_WORKER_H
-#define AGILE_ACCUMULATE_WORKER_H
+#ifndef BLAZE_GATHER_WORKER_H
+#define BLAZE_GATHER_WORKER_H
 
 #include <string>
 #include "Type.h"
@@ -7,29 +7,28 @@
 #include "Synchronization.h"
 #include "Bin.h"
 
-namespace agile {
+namespace blaze {
 
-class AccumulateWorker {
+class GatherWorker {
  public:
-    AccumulateWorker(int id)
+    GatherWorker(int id)
         :   _id(id),
             _time(0.0),
             _out_frontier(nullptr)
     {}
 
-    ~AccumulateWorker() {}
+    ~GatherWorker() {}
 
     void setFrontier(Worklist<VID>* out) {
         _out_frontier = out;
     }
 
     template <typename Func>
-    inline bool try_accumulate(Bins* bins, Func &func) {
+    inline bool try_gather(Bins* bins, Func &func) {
         Bin *full_bin = bins->get_full_bin();
         if (!full_bin)
             return false;
 
-        // accumulate bin
         uint64_t *bin = full_bin->get_bin();
         uint64_t bin_size = full_bin->get_size();
         int idx = full_bin->get_idx();
@@ -66,7 +65,7 @@ class AccumulateWorker {
         bool job_exists;
 
         while (1) {
-            job_exists = try_accumulate(bins, func);
+            job_exists = try_gather(bins, func);
 
             if (binning_done && !job_exists)
                 break;
@@ -97,6 +96,6 @@ class AccumulateWorker {
     Worklist<VID>*          _out_frontier;
 };
 
-} // namespace agile
+} // namespace blaze
 
-#endif // AGILE_ACCUMULATE_WORKER_H
+#endif // BLAZE_GATHER_WORKER_H

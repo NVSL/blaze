@@ -1,5 +1,5 @@
-#ifndef AGILE_BIN_H
-#define AGILE_BIN_H
+#ifndef BLAZE_BIN_H
+#define BLAZE_BIN_H
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -17,7 +17,7 @@
 
 using namespace std;
 
-namespace agile {
+namespace blaze {
 
 union converter { uint32_t i; float f; };
 
@@ -379,6 +379,6 @@ struct Bins {
     }
 };
 
-} // namespace agile
+} // namespace blaze
 
-#endif // AGILE_BIN_H
+#endif // BLAZE_BIN_H

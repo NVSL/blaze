@@ -15,7 +15,7 @@
 #include "boilerplate.h"
 #include "Runtime.h"
 
-using namespace agile;
+using namespace blaze;
 namespace cll = llvm::cl;
 
 static cll::opt<unsigned int>

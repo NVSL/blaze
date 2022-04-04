@@ -1,5 +1,5 @@
-#ifndef AGILE_PARALLEL_FOR_H
-#define AGILE_PARALLEL_FOR_H
+#ifndef BLAZE_PARALLEL_FOR_H
+#define BLAZE_PARALLEL_FOR_H
 
 #include <vector>
 #include <iomanip>
@@ -16,7 +16,7 @@
 #include "Param.h"
 #include "Runtime.h"
 
-namespace agile {
+namespace blaze {
 
 enum FrontierType {
     EMPTY, DENSE_ALL, DENSE, SPARSE
@@ -171,8 +171,8 @@ class EdgeMapExecutor {
         std::cout << info;
 
         if (_pb_engine) {
-            double bin_skew = _pb_engine->getBinningSkewness();
-            double acc_skew = _pb_engine->getAccumulateSkewness();
+            double bin_skew = _pb_engine->getScatterSkewness();
+            double acc_skew = _pb_engine->getGatherSkewness();
 
             std::cout << " (bin: ";
             std::cout << std::fixed << std::setprecision(2) << bin_skew;
@@ -298,6 +298,6 @@ Worklist<VID>* edgeMap(G& graph, F&& func, FLAGS flags = 0) {
     return executor.newFrontier();
 }
 
-} // namespace agile
+} // namespace blaze
 
-#endif // AGILE_PARALLEL_FOR_H
+#endif // BLAZE_PARALLEL_FOR_H

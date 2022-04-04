@@ -1,5 +1,5 @@
-#ifndef AGILE_ASYNC_IO_H
-#define AGILE_ASYNC_IO_H
+#ifndef BLAZE_ASYNC_IO_H
+#define BLAZE_ASYNC_IO_H
 
 #include <unistd.h>
 #include <sys/types.h>
@@ -10,7 +10,7 @@
 #include "Util.h"
 #include "Param.h"
 
-namespace agile {
+namespace blaze {
 
 static int io_setup(unsigned nr, aio_context_t *ctxp) {
     return syscall(__NR_io_setup, nr, ctxp);
@@ -38,7 +38,7 @@ class AsyncIoWorker {
             _queued(0), _sent(0), _received(0),
             _total_bytes_accessed(0)
     {
-        AGILE_ASSERT(_fd >= 0, "Failed to open file.");
+        BLAZE_ASSERT(_fd >= 0, "Failed to open file.");
 
         _iocb = (struct iocb*)calloc(IO_QUEUE_DEPTH, sizeof(*_iocb));
         _iocbs = (struct iocb**)calloc(IO_QUEUE_DEPTH, sizeof(*_iocbs));
@@ -50,7 +50,7 @@ class AsyncIoWorker {
         free(_iocb);
         free(_iocbs);
         free(_events);
-        AGILE_ASSERT(_queued == _sent && _sent == _received, "Inconsistent IO counters.");
+        BLAZE_ASSERT(_queued == _sent && _sent == _received, "Inconsistent IO counters.");
     }
 
     void run() {
@@ -115,7 +115,7 @@ class AsyncIoWorker {
         }
 
         for (int i = 0; i < received; i++) {
-            AGILE_ASSERT(_events[i].res > 0, "Failed to execute AIO request.");
+            BLAZE_ASSERT(_events[i].res > 0, "Failed to execute AIO request.");
         }
         _received += received;
 
@@ -136,8 +136,6 @@ class AsyncIoWorker {
     uint64_t            _total_bytes_accessed;
 };
 
+} // namespace blaze
 
-
-} // namespace agile
-
-#endif // AGILE_ASYNC_IO_H
+#endif // BLAZE_ASYNC_IO_H

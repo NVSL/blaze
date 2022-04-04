@@ -1,5 +1,5 @@
-#ifndef AGILE_RUNTIME_H
-#define AGILE_RUNTIME_H
+#ifndef BLAZE_RUNTIME_H
+#define BLAZE_RUNTIME_H
 
 #include <galois/Galois.h>
 #include "IoEngine.h"
@@ -12,7 +12,7 @@
 #include "Type.h"
 #include "Queue.h"
 
-namespace agile {
+namespace blaze {
 
 class Runtime {
  public:
@@ -128,12 +128,12 @@ class Runtime {
     static Runtime* runtimeInstance;
 
     static void setRuntimeInstance(Runtime* rt) {
-        AGILE_ASSERT(!(runtimeInstance && rt), "Double initialization of Runtime");
+        BLAZE_ASSERT(!(runtimeInstance && rt), "Double initialization of Runtime");
         runtimeInstance = rt;
     }
 
     static Runtime& getRuntimeInstance(void) {
-        AGILE_ASSERT(runtimeInstance, "Runtime not initialized");
+        BLAZE_ASSERT(runtimeInstance, "Runtime not initialized");
         return *runtimeInstance;
     }
 
@@ -163,7 +163,7 @@ class Runtime {
     MemoryCounter           _mem_counter;
 };
 
-} // namespace agile
+} // namespace blaze
 
-#endif // AGILE_RUNTIME_H
+#endif // BLAZE_RUNTIME_H
 

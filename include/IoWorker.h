@@ -1,5 +1,5 @@
-#ifndef AGILE_IO_WORKER_H
-#define AGILE_IO_WORKER_H
+#ifndef BLAZE_IO_WORKER_H
+#define BLAZE_IO_WORKER_H
 
 #include "Type.h"
 #include "Graph.h"
@@ -13,7 +13,7 @@
 #include "Set.h"
 #include <unordered_set>
 
-namespace agile {
+namespace blaze {
 
 class Runtime;
 
@@ -328,6 +328,6 @@ class IoWorker {
     struct io_event*                    _events;
 };
 
-} // namespace agile
+} // namespace blaze
 
-#endif // AGILE_IO_WORKER_H
+#endif // BLAZE_IO_WORKER_H

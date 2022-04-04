@@ -10,7 +10,7 @@ extern llvm::cl::opt<std::string> outIndexFilename;
 extern llvm::cl::list<std::string> outAdjFilenames;
 extern int numIoThreads;
 
-namespace agile {
+namespace blaze {
 
 template <typename T = uint32_t>
 struct EDGEMAP_F {
@@ -49,6 +49,6 @@ struct EDGEMAP_F {
 
 void AgileStart(int argc, char** argv);
 
-} // namespace agile
+} // namespace blaze
 
 #endif // AGILE_TEST_BOILER_PLATE_H

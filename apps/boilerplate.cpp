@@ -24,7 +24,7 @@ cll::list<std::string>
 
 int numIoThreads;
 
-namespace agile {
+namespace blaze {
 
 void AgileStart(int argc, char** argv) {
     cll::ParseCommandLineOptions(argc, argv);
@@ -37,4 +37,4 @@ void AgileStart(int argc, char** argv) {
 //  setlocale(LC_NUMERIC, "");
 }
 
-} // namespace agile
+} // namespace blaze

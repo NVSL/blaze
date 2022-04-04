@@ -32,7 +32,7 @@ static cll::opt<float>
                 cll::desc("Binning worker ratio (default: 0.67)"),
                 cll::init(BINNING_WORKER_RATIO));
 
-using namespace agile;
+using namespace blaze;
 namespace cll = llvm::cl;
 
 struct Node {

@@ -1,5 +1,5 @@
-#ifndef AGILE_BINNING_WORKER_H
-#define AGILE_BINNING_WORKER_H
+#ifndef BLAZE_BINNING_WORKER_H
+#define BLAZE_BINNING_WORKER_H
 
 #include <string>
 #include "Type.h"
@@ -9,11 +9,11 @@
 #include "Param.h"
 #include "Bin.h"
 
-namespace agile {
+namespace blaze {
 
-class BinningWorker {
+class ScatterWorker {
  public:
-    BinningWorker(int id,
+    ScatterWorker(int id,
                   std::vector<MPMCQueue<IoItem*>*>& fetched_pages)
         :   _id(id),
             _num_disks(0),
@@ -24,7 +24,7 @@ class BinningWorker {
             _num_processed_pages(0)
     {}
 
-    ~BinningWorker() {}
+    ~ScatterWorker() {}
 
     void setFrontier(Worklist<VID>* in) {
         _in_frontier = in;
@@ -159,6 +159,6 @@ class BinningWorker {
     uint64_t                _num_processed_pages;
 };
 
-} // namespace agile
+} // namespace blaze
 
-#endif // AGILE_BINNING_WORKER_H
+#endif // BLAZE_BINNING_WORKER_H

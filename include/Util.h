@@ -1,5 +1,5 @@
-#ifndef AGILE_UTIL_H
-#define AGILE_UTIL_H
+#ifndef BLAZE_UTIL_H
+#define BLAZE_UTIL_H
 
 #include <locale>
 #include <iostream>
@@ -26,20 +26,20 @@
 #define ROUND_UP_TO_PAGE(o)     ALIGN_UPTO(o, PAGE_SIZE)
 
 // Error checking
-#define AGILE_SYS_DIE(...)                                                       \
+#define BLAZE_SYS_DIE(...)                                                       \
     do {                                                                         \
         galois::gError(__FILE__, ":", __LINE__, ": ", strerror(errno), ": ",     \
                      ##__VA_ARGS__);                                             \
         abort();                                                                 \
     } while (0)
 
-#define AGILE_DIE(...)                                                           \
+#define BLAZE_DIE(...)                                                           \
     do {                                                                         \
         galois::gError(__FILE__, ":", __LINE__, ": ", ##__VA_ARGS__);            \
         abort();                                                                 \
     } while (0)
 
-#define AGILE_ASSERT(cond, ...)                                                  \
+#define BLAZE_ASSERT(cond, ...)                                                  \
     do {                                                                         \
         bool b = (cond);                                                         \
         if (!b) {                                                                \
@@ -153,4 +153,4 @@ inline void prefetch_range_offset(char *base, long idx, size_t len)
         : "r8", "r9");
 }
 
-#endif // AGILE_UTIL_H
+#endif // BLAZE_UTIL_H

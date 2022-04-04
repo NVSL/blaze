@@ -1,5 +1,5 @@
-#ifndef PMBENCH_FILESYSTEM_H
-#define PMBENCH_FILESYSTEM_H
+#ifndef BLAZE_FILESYSTEM_H
+#define BLAZE_FILESYSTEM_H
 
 #include <sys/stat.h>
 #include <sys/types.h>

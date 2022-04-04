@@ -1,9 +1,9 @@
-#ifndef AGILE_VERTEXMAP_H
-#define AGILE_VERTEXMAP_H
+#ifndef BLAZE_VERTEXMAP_H
+#define BLAZE_VERTEXMAP_H
 
 #include "galois/Galois.h"
 
-namespace agile {
+namespace blaze {
 
 template <typename F>
 void vertexMap(Worklist<VID>* frontier, F&& f) {
@@ -41,6 +41,6 @@ void vertexMap(G& graph, F&& f) {
                     }, galois::no_stats());
 }
 
-} // namespace agile
+} // namespace blaze
 
-#endif // AGILE_VERTEXMAP_H
+#endif // BLAZE_VERTEXMAP_H

@@ -1,3 +1,3 @@
 #include "Runtime.h"
 
-agile::Runtime* agile::Runtime::runtimeInstance = nullptr;
+blaze::Runtime* blaze::Runtime::runtimeInstance = nullptr;

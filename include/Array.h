@@ -1,10 +1,10 @@
-#ifndef AGILE_ARRAY_H
-#define AGILE_ARRAY_H
+#ifndef BLAZE_ARRAY_H
+#define BLAZE_ARRAY_H
 
 #include "galois/ParallelSTL.h"
 #include "mem.h"
 
-namespace agile {
+namespace blaze {
 
 template <typename T, bool OnPmem = false>
 class Array {
@@ -98,6 +98,6 @@ public:
     size_t bytes() const { return m_size * sizeof(T); }
 };
 
-} // namespace agile
+} // namespace blaze
 
-#endif // AGILE_ARRAY_H
+#endif // BLAZE_ARRAY_H

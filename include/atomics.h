@@ -1,8 +1,8 @@
 // Copyright (c) 2015, The Regents of the University of California (Regents)
 // See LICENSE.txt for license details
 
-#ifndef AGILE_ATOMICS_H
-#define AGILE_ATOMICS_H
+#ifndef BLAZE_ATOMICS_H
+#define BLAZE_ATOMICS_H
 
 
 /*
@@ -144,4 +144,4 @@ inline void atomic_add(T *x, T a) {
     } while (!compare_and_swap(*x, old_val, new_val));
 }
 
-#endif  // AGILE_ATOMICS_H
+#endif  // BLAZE_ATOMICS_H

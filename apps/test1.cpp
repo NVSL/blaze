@@ -9,7 +9,7 @@
 #include "PageRank.h"
 #include "EdgeMap.h"
 
-using namespace agile;
+using namespace blaze;
 
 struct TEST : public EDGEMAP_F {
 };

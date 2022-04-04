@@ -1,9 +1,9 @@
-#ifndef AGILE_VERTEXFILTER_H
-#define AGILE_VERTEXFILTER_H
+#ifndef BLAZE_VERTEXFILTER_H
+#define BLAZE_VERTEXFILTER_H
 
 #include "galois/Galois.h"
 
-namespace agile {
+namespace blaze {
 
 template <typename F>
 Worklist<VID>* vertexFilter(Worklist<VID>* frontier, F&& filter) {
@@ -54,6 +54,6 @@ Worklist<VID>* vertexFilter(G& graph, F&& filter) {
     return out;
 }
 
-} // namespace agile
+} // namespace blaze
 
-#endif // AGILE_VERTEXFILTER_H
+#endif // BLAZE_VERTEXFILTER_H

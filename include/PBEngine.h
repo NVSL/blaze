@@ -1,21 +1,21 @@
-#ifndef AGILE_PB_ENGINE_H
-#define AGILE_PB_ENGINE_H
+#ifndef BLAZE_PB_ENGINE_H
+#define BLAZE_PB_ENGINE_H
 
 #include "galois/Galois.h"
 #include "Type.h"
 #include "Graph.h"
-#include "BinningWorker.h"
-#include "AccumulateWorker.h"
+#include "ScatterWorker.h"
+#include "GatherWorker.h"
 #include "Synchronization.h"
 #include "Bin.h"
 
-namespace agile {
+namespace blaze {
 
 class PBEngine {
  public:
     PBEngine(int start_tid,
-             int num_bin_workers,
-             int num_acc_workers,
+             int num_scatter_workers,
+             int num_gather_workers,
              std::vector<MPMCQueue<IoItem*>*>& fetch_pages)
         :   _start_tid(start_tid),
             _in_frontier(nullptr),
@@ -23,13 +23,13 @@ class PBEngine {
             _thread_pool(galois::substrate::getThreadPool())
     {
         // binning workers
-        for (int i = 0; i < num_bin_workers; ++i) {
-            _bin_workers.push_back(new BinningWorker(i, fetch_pages));
+        for (int i = 0; i < num_scatter_workers; ++i) {
+            _scatter_workers.push_back(new ScatterWorker(i, fetch_pages));
         }
 
         // accumulate workers
-        for (int i = 0; i < num_acc_workers; ++i) {
-            _acc_workers.push_back(new AccumulateWorker(i));
+        for (int i = 0; i < num_gather_workers; ++i) {
+            _gather_workers.push_back(new GatherWorker(i));
         }
     }
 
@@ -41,7 +41,7 @@ class PBEngine {
         _in_frontier = frontier;
 
         // give in/out frontiers to workers
-        for (auto worker : _bin_workers) {
+        for (auto worker : _scatter_workers) {
             worker->setFrontier(_in_frontier);
         }
 
@@ -56,7 +56,7 @@ class PBEngine {
             _out_frontier = nullptr;
         }
 
-        for (auto worker : _acc_workers) {
+        for (auto worker : _gather_workers) {
             worker->setFrontier(_out_frontier);
         }
     }
@@ -67,27 +67,27 @@ class PBEngine {
 
         // start binning workers
         std::vector<std::function<void(void)>> functions;
-        for (auto worker : _bin_workers) {
-            std::function<void(void)> f = std::bind(&BinningWorker::run<Gr, Func>,
+        for (auto worker : _scatter_workers) {
+            std::function<void(void)> f = std::bind(&ScatterWorker::run<Gr, Func>,
                                                     worker,
                                                     std::ref(graph),
                                                     std::ref(func), 
                                                     std::ref(sync));
             functions.push_back(f);
         }
-        _thread_pool.fork(_start_tid, _bin_workers.size(), functions);
+        _thread_pool.fork(_start_tid, _scatter_workers.size(), functions);
 
         // start accumulate workers
         functions.clear();
-        for (auto worker : _acc_workers) {
-            std::function<void(void)> f = std::bind(&AccumulateWorker::run<Gr, Func>,
+        for (auto worker : _gather_workers) {
+            std::function<void(void)> f = std::bind(&GatherWorker::run<Gr, Func>,
                                                     worker,
                                                     std::ref(graph),
                                                     std::ref(func), 
                                                     std::ref(sync));
             functions.push_back(f);
         }
-        _thread_pool.fork(_start_tid + _bin_workers.size(), _acc_workers.size(), functions);
+        _thread_pool.fork(_start_tid + _scatter_workers.size(), _gather_workers.size(), functions);
     }
 
     template <typename Gr, typename Func>
@@ -100,7 +100,7 @@ class PBEngine {
         sync.mark_binning_done();
 
         // join accumulate workers
-        _thread_pool.join(_start_tid + _bin_workers.size());
+        _thread_pool.join(_start_tid + _scatter_workers.size());
 
         _time_end = std::chrono::steady_clock::now();
         std::chrono::duration<double> duration = _time_end - _time_start;
@@ -108,26 +108,26 @@ class PBEngine {
         return duration.count();
     }
 
-    int getNumberOfBinningWorkers() const {
-        return _bin_workers.size();
+    int getNumberOfScatterWorkers() const {
+        return _scatter_workers.size();
     }
 
-    int getNumberOfAccumulateWorkers() const {
-        return _acc_workers.size();
+    int getNumberOfGatherWorkers() const {
+        return _gather_workers.size();
     }
 
     Worklist<VID>* getOutFrontier() {
         return _out_frontier;
     }
 
-    double getBinningSkewness() const {
+    double getScatterSkewness() const {
         double min_time, max_time, time, gap;
 
         min_time = 10000000.0;
         max_time = 0.0;
 
-        for (int i = 0; i < _bin_workers.size(); i++) {
-            time = _bin_workers[i]->getTime();
+        for (int i = 0; i < _scatter_workers.size(); i++) {
+            time = _scatter_workers[i]->getTime();
 
             if (time < min_time)
                 min_time = time;
@@ -137,14 +137,14 @@ class PBEngine {
         return max_time / min_time;
     }
 
-    double getAccumulateSkewness() const {
+    double getGatherSkewness() const {
         double min_time, max_time, time, gap;
 
         min_time = 10000000.0;
         max_time = 0.0;
 
-        for (int i = 0; i < _acc_workers.size(); i++) {
-            time = _acc_workers[i]->getTime();
+        for (int i = 0; i < _gather_workers.size(); i++) {
+            time = _gather_workers[i]->getTime();
 
             if (time < min_time)
                 min_time = time;
@@ -162,10 +162,10 @@ class PBEngine {
         max_time = 0.0;
 
         std::cout << "    scatter: ";
-        for (int i = 0; i < _bin_workers.size(); i++) {
+        for (int i = 0; i < _scatter_workers.size(); i++) {
             if (i != 0)
                 std::cout << ",";
-            time = _bin_workers[i]->getTime();
+            time = _scatter_workers[i]->getTime();
             std::cout << std::fixed << std::setprecision(2) << time;
 
             if (time < min_time)
@@ -182,10 +182,10 @@ class PBEngine {
         max_time = 0.0;
 
         std::cout << "    gather:  ";
-        for (int i = 0; i < _acc_workers.size(); i++) {
+        for (int i = 0; i < _gather_workers.size(); i++) {
             if (i != 0)
                 std::cout << ",";
-            time = _acc_workers[i]->getTime();
+            time = _gather_workers[i]->getTime();
             std::cout << std::fixed << std::setprecision(2) << time;
 
             if (time < min_time)
@@ -200,8 +200,8 @@ class PBEngine {
 
  private:
     int                                     _start_tid;
-    std::vector<BinningWorker*>             _bin_workers;
-    std::vector<AccumulateWorker*>          _acc_workers;
+    std::vector<ScatterWorker*>             _scatter_workers;
+    std::vector<GatherWorker*>              _gather_workers;
     Worklist<VID>*                          _in_frontier;
     Worklist<VID>*                          _out_frontier;
     galois::substrate::ThreadPool&          _thread_pool;
@@ -209,6 +209,6 @@ class PBEngine {
     std::chrono::time_point<std::chrono::steady_clock>  _time_end;
 };
 
-} // namespace agile
+} // namespace blaze
 
-#endif // AGILE_PB_ENGINE_H
+#endif // BLAZE_PB_ENGINE_H

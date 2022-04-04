@@ -1,11 +1,11 @@
-#ifndef AGILE_IO_SYNC_H
-#define AGILE_IO_SYNC_H
+#ifndef BLAZE_IO_SYNC_H
+#define BLAZE_IO_SYNC_H
 
 #include <vector>
 #include <atomic>
 //#include "Type.h"
 
-namespace agile {
+namespace blaze {
 
 class IoSync {
  public:
@@ -32,6 +32,6 @@ class IoSync {
     std::atomic<uint64_t>*  _pos;
 };
 
-} // namespace agile
+} // namespace blaze
 
-#endif // AGILE_IO_SYNC_H
+#endif // BLAZE_IO_SYNC_H

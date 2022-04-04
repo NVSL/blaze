@@ -1,16 +1,16 @@
-#ifndef AGILE_PROFILE_H
-#define AGILE_PROFILE_H
+#ifndef BLAZE_PROFILE_H
+#define BLAZE_PROFILE_H
 
 #include <cstring>
 
-#ifdef AGILE_USE_PAPI
+#ifdef BLAZE_USE_PAPI
 extern "C" {
 #include <papi.h>
 #include <papiStdEventDefs.h>
 }
 #endif
 
-#ifdef AGILE_USE_PAPI
+#ifdef BLAZE_USE_PAPI
 
 namespace internal {
 
@@ -23,15 +23,15 @@ void papiInit() {
     int retval = PAPI_library_init(PAPI_VER_CURRENT);
 
     if (retval != PAPI_VER_CURRENT && retval > 0) {
-        AGILE_DIE("PAPI library version mismatch!");
+        BLAZE_DIE("PAPI library version mismatch!");
     }
 
     if (retval < 0) {
-        AGILE_DIE("Initialization error!");
+        BLAZE_DIE("Initialization error!");
     }
 
     if ((retval = PAPI_thread_init(&papiGetTID)) != PAPI_OK) {
-        AGILE_DIE("PAPI thread init failed");
+        BLAZE_DIE("PAPI thread init failed");
     }
 }
 
@@ -41,7 +41,7 @@ void decodePapiEvents(const V1& eventNames, V2& papiEvents) {
         char buf[256];
         std::strcpy(buf, eventNames[i].c_str());
         if (PAPI_event_name_to_code(buf, &papiEvents[i]) != PAPI_OK) {
-            AGILE_DIE("Failed to recognize eventName = ", eventNames[i],
+            BLAZE_DIE("Failed to recognize eventName = ", eventNames[i],
                                  ", event code: ", papiEvents[i]);
         }
     }
@@ -51,7 +51,7 @@ template <typename V1, typename V2, typename V3>
 void papiStart(V1& eventSets, V2& papiResults, V3& papiEvents) {
     galois::on_each([&](const unsigned tid, const unsigned numT) {
         if (PAPI_register_thread() != PAPI_OK) {
-            AGILE_DIE("Failed to register thread with PAPI");
+            BLAZE_DIE("Failed to register thread with PAPI");
         }
 
         int& eventSet = *eventSets.getLocal();
@@ -60,15 +60,15 @@ void papiStart(V1& eventSets, V2& papiResults, V3& papiEvents) {
         papiResults.getLocal()->resize(papiEvents.size());
 
         if (PAPI_create_eventset(&eventSet) != PAPI_OK) {
-            AGILE_DIE("Failed to init event set");
+            BLAZE_DIE("Failed to init event set");
         }
         if (PAPI_add_events(eventSet, papiEvents.data(), papiEvents.size()) !=
                 PAPI_OK) {
-            AGILE_DIE("Failed to add events");
+            BLAZE_DIE("Failed to add events");
         }
 
         if (PAPI_start(eventSet) != PAPI_OK) {
-            AGILE_DIE("failed to start PAPI");
+            BLAZE_DIE("failed to start PAPI");
         }
     });
 }
@@ -80,15 +80,15 @@ void papiStop(V1& eventSets, V2& papiResults, V3& eventNames,
         int& eventSet = *eventSets.getLocal();
 
         if (PAPI_stop(eventSet, papiResults.getLocal()->data()) != PAPI_OK) {
-            AGILE_DIE("PAPI_stop failed");
+            BLAZE_DIE("PAPI_stop failed");
         }
 
         if (PAPI_cleanup_eventset(eventSet) != PAPI_OK) {
-            AGILE_DIE("PAPI_cleanup_eventset failed");
+            BLAZE_DIE("PAPI_cleanup_eventset failed");
         }
 
         if (PAPI_destroy_eventset(&eventSet) != PAPI_OK) {
-            AGILE_DIE("PAPI_destroy_eventset failed");
+            BLAZE_DIE("PAPI_destroy_eventset failed");
         }
 
         assert(eventNames.size() == papiResults.getLocal()->size() &&
@@ -99,7 +99,7 @@ void papiStop(V1& eventSets, V2& papiResults, V3& eventNames,
         }
 
         if (PAPI_unregister_thread() != PAPI_OK) {
-            AGILE_DIE("Failed to un-register thread with PAPI");
+            BLAZE_DIE("Failed to un-register thread with PAPI");
         }
     });
 }
@@ -155,4 +155,4 @@ void profilePapi(const F& func, const char* region) {
 
 #endif
 
-#endif // AGILE_PROFILE_H
+#endif // BLAZE_PROFILE_H

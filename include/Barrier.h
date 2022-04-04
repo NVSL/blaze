@@ -1,5 +1,5 @@
-#ifndef AGILE_BARRIER_H
-#define AGILE_BARRIER_H
+#ifndef BLAZE_BARRIER_H
+#define BLAZE_BARRIER_H
 
 #include <mutex>
 #include <condition_variable>
@@ -30,4 +30,4 @@ class Barrier {
     bool                    _ready;
 };
 
-#endif // AGILE_BARRIER_H
+#endif // BLAZE_BARRIER_H

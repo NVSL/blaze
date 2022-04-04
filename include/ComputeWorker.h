@@ -1,5 +1,5 @@
-#ifndef AGILE_COMPUTE_WORKER_H
-#define AGILE_COMPUTE_WORKER_H
+#ifndef BLAZE_COMPUTE_WORKER_H
+#define BLAZE_COMPUTE_WORKER_H
 
 #include <string>
 #include "Type.h"
@@ -8,7 +8,7 @@
 #include "Queue.h"
 #include "Param.h"
 
-namespace agile {
+namespace blaze {
 
 class ComputeWorker {
  public:
@@ -143,6 +143,6 @@ class ComputeWorker {
     uint64_t                _num_processed_pages;
 };
 
-} // namespace agile
+} // namespace blaze
 
-#endif // AGILE_COMPUTE_WORKER_H
+#endif // BLAZE_COMPUTE_WORKER_H

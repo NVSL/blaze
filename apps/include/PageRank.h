@@ -6,7 +6,7 @@
 #include "Type.h"
 #include "Array.h"
 
-namespace agile {
+namespace blaze {
 
 constexpr static const unsigned PRINT_TOP = 20;
 
@@ -53,7 +53,7 @@ void printTop(Array<Node>& data, unsigned topn = PRINT_TOP) {
     }
 }
 
-} // namespace agile
+} // namespace blaze
 
 #endif // AGILE_PAGERANK_H
 

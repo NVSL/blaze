@@ -1,5 +1,5 @@
-#ifndef AGILE_IO_ENGINE_H
-#define AGILE_IO_ENGINE_H
+#ifndef BLAZE_IO_ENGINE_H
+#define BLAZE_IO_ENGINE_H
 
 #include <vector>
 #include "galois/Galois.h"
@@ -14,7 +14,7 @@
 
 using namespace std;
 
-namespace agile {
+namespace blaze {
 
 class IoEngine {
  public:
@@ -149,6 +149,6 @@ class IoEngine {
     galois::substrate::ThreadPool&      _thread_pool;
 };
 
-} // namespace agile
+} // namespace blaze
 
-#endif // AGILE_IO_ENGINE_H
+#endif // BLAZE_IO_ENGINE_H

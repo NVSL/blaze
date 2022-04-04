@@ -18,7 +18,7 @@
 #include "PageRank.h"
 #include "Bin.h"
 
-using namespace agile;
+using namespace blaze;
 namespace cll = llvm::cl;
 
 constexpr static const unsigned MAX_ITER = 20;

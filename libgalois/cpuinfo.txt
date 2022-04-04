@@ -1,0 +1,288 @@
+processor	: 0
+physical id	: 0
+siblings	: 24
+core id		: 0
+cpu cores	: 24
+
+processor	: 1
+physical id	: 0
+siblings	: 24
+core id		: 1
+cpu cores	: 24
+
+processor	: 2
+physical id	: 0
+siblings	: 24
+core id		: 2
+cpu cores	: 24
+
+processor	: 3
+physical id	: 0
+siblings	: 24
+core id		: 3
+cpu cores	: 24
+
+processor	: 4
+physical id	: 0
+siblings	: 24
+core id		: 4
+cpu cores	: 24
+
+processor	: 5
+physical id	: 0
+siblings	: 24
+core id		: 5
+cpu cores	: 24
+
+processor	: 6
+physical id	: 0
+siblings	: 24
+core id		: 8
+cpu cores	: 24
+
+processor	: 7
+physical id	: 0
+siblings	: 24
+core id		: 9
+cpu cores	: 24
+
+processor	: 8
+physical id	: 0
+siblings	: 24
+core id		: 10
+cpu cores	: 24
+
+processor	: 9
+physical id	: 0
+siblings	: 24
+core id		: 11
+cpu cores	: 24
+
+processor	: 10
+physical id	: 0
+siblings	: 24
+core id		: 12
+cpu cores	: 24
+
+processor	: 11
+physical id	: 0
+siblings	: 24
+core id		: 13
+cpu cores	: 24
+
+processor	: 12
+physical id	: 0
+siblings	: 24
+core id		: 16
+cpu cores	: 24
+
+processor	: 13
+physical id	: 0
+siblings	: 24
+core id		: 17
+cpu cores	: 24
+
+processor	: 14
+physical id	: 0
+siblings	: 24
+core id		: 18
+cpu cores	: 24
+
+processor	: 15
+physical id	: 0
+siblings	: 24
+core id		: 19
+cpu cores	: 24
+
+processor	: 16
+physical id	: 0
+siblings	: 24
+core id		: 20
+cpu cores	: 24
+
+processor	: 17
+physical id	: 0
+siblings	: 24
+core id		: 21
+cpu cores	: 24
+
+processor	: 18
+physical id	: 0
+siblings	: 24
+core id		: 24
+cpu cores	: 24
+
+processor	: 19
+physical id	: 0
+siblings	: 24
+core id		: 25
+cpu cores	: 24
+
+processor	: 20
+physical id	: 0
+siblings	: 24
+core id		: 26
+cpu cores	: 24
+
+processor	: 21
+physical id	: 0
+siblings	: 24
+core id		: 27
+cpu cores	: 24
+
+processor	: 22
+physical id	: 0
+siblings	: 24
+core id		: 28
+cpu cores	: 24
+
+processor	: 23
+physical id	: 0
+siblings	: 24
+core id		: 29
+cpu cores	: 24
+
+processor	: 24
+physical id	: 1
+siblings	: 24
+core id		: 0
+cpu cores	: 24
+
+processor	: 25
+physical id	: 1
+siblings	: 24
+core id		: 1
+cpu cores	: 24
+
+processor	: 26
+physical id	: 1
+siblings	: 24
+core id		: 2
+cpu cores	: 24
+
+processor	: 27
+physical id	: 1
+siblings	: 24
+core id		: 3
+cpu cores	: 24
+
+processor	: 28
+physical id	: 1
+siblings	: 24
+core id		: 4
+cpu cores	: 24
+
+processor	: 29
+physical id	: 1
+siblings	: 24
+core id		: 5
+cpu cores	: 24
+
+processor	: 30
+physical id	: 1
+siblings	: 24
+core id		: 8
+cpu cores	: 24
+
+processor	: 31
+physical id	: 1
+siblings	: 24
+core id		: 9
+cpu cores	: 24
+
+processor	: 32
+physical id	: 1
+siblings	: 24
+core id		: 10
+cpu cores	: 24
+
+processor	: 33
+physical id	: 1
+siblings	: 24
+core id		: 11
+cpu cores	: 24
+
+processor	: 34
+physical id	: 1
+siblings	: 24
+core id		: 12
+cpu cores	: 24
+
+processor	: 35
+physical id	: 1
+siblings	: 24
+core id		: 13
+cpu cores	: 24
+
+processor	: 36
+physical id	: 1
+siblings	: 24
+core id		: 16
+cpu cores	: 24
+
+processor	: 37
+physical id	: 1
+siblings	: 24
+core id		: 17
+cpu cores	: 24
+
+processor	: 38
+physical id	: 1
+siblings	: 24
+core id		: 18
+cpu cores	: 24
+
+processor	: 39
+physical id	: 1
+siblings	: 24
+core id		: 19
+cpu cores	: 24
+
+processor	: 40
+physical id	: 1
+siblings	: 24
+core id		: 20
+cpu cores	: 24
+
+processor	: 41
+physical id	: 1
+siblings	: 24
+core id		: 21
+cpu cores	: 24
+
+processor	: 42
+physical id	: 1
+siblings	: 24
+core id		: 24
+cpu cores	: 24
+
+processor	: 43
+physical id	: 1
+siblings	: 24
+core id		: 25
+cpu cores	: 24
+
+processor	: 44
+physical id	: 1
+siblings	: 24
+core id		: 26
+cpu cores	: 24
+
+processor	: 45
+physical id	: 1
+siblings	: 24
+core id		: 27
+cpu cores	: 24
+
+processor	: 46
+physical id	: 1
+siblings	: 24
+core id		: 28
+cpu cores	: 24
+
+processor	: 47
+physical id	: 1
+siblings	: 24
+core id		: 29
+cpu cores	: 24
+

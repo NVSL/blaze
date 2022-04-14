@@ -60,14 +60,6 @@ endif()
 # Libraries installed in a custom path #
 ########################################
 
-# Intel TBB (Required)
-set(TBB_ROOT /opt/intel/oneapi/tbb/latest)
-include_directories(${TBB_ROOT}/include)
-find_library(TBB_LIBRARY libtbb.so
-             PATHS ${TBB_ROOT}/lib/intel64/gcc4.8
-             NO_DEFAULT_PATH
-             REQUIRED)
-
 # Galois (Required)
 set(GALOIS_VERSION_MAJOR "5")
 set(GALOIS_VERSION_MINOR "0")

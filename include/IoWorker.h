@@ -10,7 +10,6 @@
 #include "AsyncIo.h"
 #include "Queue.h"
 #include "Param.h"
-#include "Set.h"
 #include <unordered_set>
 
 namespace blaze {

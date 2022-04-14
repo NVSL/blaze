@@ -3,7 +3,6 @@
 
 #include "galois/Galois.h"
 #include "Bitmap.h"
-#include "Set.h"
 
 namespace blaze {
 

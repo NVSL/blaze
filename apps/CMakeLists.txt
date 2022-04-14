@@ -5,8 +5,7 @@ foreach(PROG bfs bfs_pb pagerank pagerank_pb wcc wcc_pb spmv spmv_pb bc bc_pb kc
     target_link_libraries(${PROG} PUBLIC Threads::Threads
                             gllvm
                             galois_shmem
-                            tcmalloc
-                            ${TBB_LIBRARY})
+                            tcmalloc)
 endforeach()
 
 # tools
@@ -15,6 +14,5 @@ foreach(PROG convert)
     target_link_libraries(${PROG} PUBLIC Threads::Threads
                             gllvm
                             galois_shmem
-                            tcmalloc
-                            ${TBB_LIBRARY})
+                            tcmalloc)
 endforeach()

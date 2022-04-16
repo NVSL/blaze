@@ -111,6 +111,7 @@ if __name__ == "__main__":
     num_disks = len(args.disks)
 
     # Build command
+    data_format = "gr"
     cmd = build_command(args, data_format)
 
     result_dir = args.result_dir

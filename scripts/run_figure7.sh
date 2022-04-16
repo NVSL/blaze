@@ -47,4 +47,4 @@ threads=16
 ./run.py --result_dir ${result_dir} --disks ${disks} -t ${threads} -k bc -d rmat30 --start_node 0
 
 # Produce a csv file
-./generate_datafile.py configs/figure7.csv time figure7.csv
+./generate_datafile.py blaze configs/figure7.csv time figure7.csv

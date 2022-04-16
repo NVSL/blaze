@@ -51,3 +51,9 @@ do
 done
 
 # Produce a csv file
+./generate_datafile.py blaze configs/figure9_rmat27.csv time figure9_rmat27.csv
+./generate_datafile.py blaze configs/figure9_rmat30.csv time figure9_rmat30.csv
+./generate_datafile.py blaze configs/figure9_uran27.csv time figure9_uran27.csv
+./generate_datafile.py blaze configs/figure9_twitter.csv time figure9_twitter.csv
+./generate_datafile.py blaze configs/figure9_sk2005.csv time figure9_sk2005.csv
+./generate_datafile.py blaze configs/figure9_friendster.csv time figure9_friendster.csv

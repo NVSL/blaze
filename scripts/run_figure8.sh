@@ -92,5 +92,5 @@ threads=16
 
 
 # Produce a csv file
-./generate_datafile.py configs/figure8_a.csv io_bw figure8_a.csv
-./generate_datafile.py configs/figure8_b.csv io_bw figure8_b.csv
+./generate_datafile.py blaze configs/figure8_a.csv io_bw figure8_a.csv
+./generate_datafile.py blaze configs/figure8_b.csv io_bw figure8_b.csv

@@ -1,7 +1,7 @@
 Datasets,BFS,PR,WCC,SpMV,BC
-rmat27,result/bfs_sync/rmat27_gr_16_1__1024_8_8.txt,result/pagerank_sync/rmat27_gr_16_1__1024_8_8.txt,result/wcc_sync/rmat27_gr_16_1__1024_8_8.txt,result/spmv_sync1/rmat27_gr_16_1__1024_8_8.txt,result/bc_sync/rmat27_gr_16_1__1024_8_8.txt
-rmat30,result/bfs_sync/rmat30_gr_16_1__1024_8_8.txt,result/pagerank_sync/rmat30_gr_16_1__1024_8_8.txt,result/wcc_sync/rmat30_gr_16_1__1024_8_8.txt,result/spmv_sync1/rmat30_gr_16_1__1024_8_8.txt,result/bc_sync/rmat30_gr_16_1__1024_8_8.txt
-uran27,result/bfs_sync/uran27_gr_16_1__1024_8_8.txt,result/pagerank_sync/uran27_gr_16_1__1024_8_8.txt,result/wcc_sync/uran27_gr_16_1__1024_8_8.txt,result/spmv_sync1/uran27_gr_16_1__1024_8_8.txt,result/bc_sync/uran27_gr_16_1__1024_8_8.txt
-twitter,result/bfs_sync/twitter_gr_16_1__1024_8_8.txt,result/pagerank_sync/twitter_gr_16_1__1024_8_8.txt,result/wcc_sync/twitter_gr_16_1__1024_8_8.txt,result/spmv_sync1/twitter_gr_16_1__1024_8_8.txt,result/bc_sync/twitter_gr_16_1__1024_8_8.txt
-sk2005,result/bfs_sync/sk2005_gr_16_1__1024_8_8.txt,result/pagerank_sync/sk2005_gr_16_1__1024_8_8.txt,result/wcc_sync/sk2005_gr_16_1__1024_8_8.txt,result/spmv_sync1/sk2005_gr_16_1__1024_8_8.txt,result/bc_sync/sk2005_gr_16_1__1024_8_8.txt
-friendster,result/bfs_sync/friendster_gr_16_1__1024_8_8.txt,result/pagerank_sync/friendster_gr_16_1__1024_8_8.txt,result/wcc_sync/friendster_gr_16_1__1024_8_8.txt,result/spmv_sync1/friendster_gr_16_1__1024_8_8.txt,result/bc_sync/friendster_gr_16_1__1024_8_8.txt
+rmat27,result/bfs_sync/rmat27_gr_16_1.txt,result/pagerank_sync/rmat27_gr_16_1.txt,result/wcc_sync/rmat27_gr_16_1.txt,result/spmv_sync1/rmat27_gr_16_1.txt,result/bc_sync/rmat27_gr_16_1.txt
+rmat30,result/bfs_sync/rmat30_gr_16_1.txt,result/pagerank_sync/rmat30_gr_16_1.txt,result/wcc_sync/rmat30_gr_16_1.txt,result/spmv_sync1/rmat30_gr_16_1.txt,result/bc_sync/rmat30_gr_16_1.txt
+uran27,result/bfs_sync/uran27_gr_16_1.txt,result/pagerank_sync/uran27_gr_16_1.txt,result/wcc_sync/uran27_gr_16_1.txt,result/spmv_sync1/uran27_gr_16_1.txt,result/bc_sync/uran27_gr_16_1.txt
+twitter,result/bfs_sync/twitter_gr_16_1.txt,result/pagerank_sync/twitter_gr_16_1.txt,result/wcc_sync/twitter_gr_16_1.txt,result/spmv_sync1/twitter_gr_16_1.txt,result/bc_sync/twitter_gr_16_1.txt
+sk2005,result/bfs_sync/sk2005_gr_16_1.txt,result/pagerank_sync/sk2005_gr_16_1.txt,result/wcc_sync/sk2005_gr_16_1.txt,result/spmv_sync1/sk2005_gr_16_1.txt,result/bc_sync/sk2005_gr_16_1.txt
+friendster,result/bfs_sync/friendster_gr_16_1.txt,result/pagerank_sync/friendster_gr_16_1.txt,result/wcc_sync/friendster_gr_16_1.txt,result/spmv_sync1/friendster_gr_16_1.txt,result/bc_sync/friendster_gr_16_1.txt

@@ -1,0 +1,7 @@
+Datasets,BFS,PR,WCC,SpMV,BC
+rmat27,result/bfs/rmat27_gr_16_1__1024_8_8.txt,result/pagerank/rmat27_gr_16_1__1024_8_8.txt,result/wcc/rmat27_gr_16_1__1024_8_8.txt,result/spmv1/rmat27_gr_16_1__1024_8_8.txt,result/bc/rmat27_gr_16_1__1024_8_8.txt
+rmat30,result/bfs/rmat30_gr_16_1__1024_8_8.txt,result/pagerank/rmat30_gr_16_1__1024_8_8.txt,result/wcc/rmat30_gr_16_1__1024_8_8.txt,result/spmv1/rmat30_gr_16_1__1024_8_8.txt,result/bc/rmat30_gr_16_1__1024_8_8.txt
+uran27,result/bfs/uran27_gr_16_1__1024_8_8.txt,result/pagerank/uran27_gr_16_1__1024_8_8.txt,result/wcc/uran27_gr_16_1__1024_8_8.txt,result/spmv1/uran27_gr_16_1__1024_8_8.txt,result/bc/uran27_gr_16_1__1024_8_8.txt
+twitter,result/bfs/twitter_gr_16_1__1024_8_8.txt,result/pagerank/twitter_gr_16_1__1024_8_8.txt,result/wcc/twitter_gr_16_1__1024_8_8.txt,result/spmv1/twitter_gr_16_1__1024_8_8.txt,result/bc/twitter_gr_16_1__1024_8_8.txt
+sk2005,result/bfs/sk2005_gr_16_1__1024_8_8.txt,result/pagerank/sk2005_gr_16_1__1024_8_8.txt,result/wcc/sk2005_gr_16_1__1024_8_8.txt,result/spmv1/sk2005_gr_16_1__1024_8_8.txt,result/bc/sk2005_gr_16_1__1024_8_8.txt
+friendster,result/bfs/friendster_gr_16_1__1024_8_8.txt,result/pagerank/friendster_gr_16_1__1024_8_8.txt,result/wcc/friendster_gr_16_1__1024_8_8.txt,result/spmv1/friendster_gr_16_1__1024_8_8.txt,result/bc/friendster_gr_16_1__1024_8_8.txt

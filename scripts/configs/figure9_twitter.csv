@@ -1,0 +1,5 @@
+Threads,BFS,PR,WCC,SpMV,BC
+2,result/bfs/twitter_gr_2_1__1024_1_1.txt,result/pagerank/twitter_gr_2_1__1024_1_1.txt,result/wcc/twitter_gr_2_1__1024_1_1.txt,result/spmv1/twitter_gr_2_1__1024_1_1.txt,result/bc/twitter_gr_2_1__1024_1_1.txt
+4,result/bfs/twitter_gr_4_1__1024_2_2.txt,result/pagerank/twitter_gr_4_1__1024_2_2.txt,result/wcc/twitter_gr_4_1__1024_2_2.txt,result/spmv1/twitter_gr_4_1__1024_2_2.txt,result/bc/twitter_gr_4_1__1024_2_2.txt
+8,result/bfs/twitter_gr_8_1__1024_4_4.txt,result/pagerank/twitter_gr_8_1__1024_4_4.txt,result/wcc/twitter_gr_8_1__1024_4_4.txt,result/spmv1/twitter_gr_8_1__1024_4_4.txt,result/bc/twitter_gr_8_1__1024_4_4.txt
+16,result/bfs/twitter_gr_16_1__1024_8_8.txt,result/pagerank/twitter_gr_16_1__1024_8_8.txt,result/wcc/twitter_gr_16_1__1024_8_8.txt,result/spmv1/twitter_gr_16_1__1024_8_8.txt,result/bc/twitter_gr_16_1__1024_8_8.txt

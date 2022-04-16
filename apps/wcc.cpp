@@ -26,35 +26,43 @@ static cll::opt<std::string>
 static cll::list<std::string>
 		inAdjFilenames("inAdjFilenames", cll::desc("<in adj files>"), cll::OneOrMore);
 
+static cll::opt<unsigned int>
+        binSpace("binSpace",
+                cll::desc("Size of bin space in MB (default: 256)"),
+                cll::init(256));
 
-template <typename T>
-inline bool writeMin(T *a, T b) {
-	T c;
-	bool r = 0;
-	do {
-		c = *a;
-	} while (c > b && !(r = compare_and_swap(*a, c, b)));
-	return r;
-}
+static cll::opt<int>
+        binCount("binCount",
+                cll::desc("Number of bins (default: 4096)"),
+                cll::init(BIN_COUNT));
+
+static cll::opt<int>
+        binBufSize("binBufSize",
+                cll::desc("Size of a bin buffer (default: 128)"),
+                cll::init(BIN_BUF_SIZE));
+
+static cll::opt<float>
+        binningRatio("binningRatio",
+                cll::desc("Binning worker ratio (default: 0.67)"),
+                cll::init(BINNING_WORKER_RATIO));
+
 
 struct WCC_F : public EDGEMAP_F<uint32_t> {
 	Array<uint32_t>& ids;
 
-	WCC_F(Array<uint32_t>& i): ids(i) {}
+	WCC_F(Array<uint32_t>& i, Bins* b): ids(i), EDGEMAP_F(b) {}
 
-	inline bool update(VID src, VID dst) {
+    inline uint32_t scatter(VID src, VID dst) {
+        return ids[src];
+    }
+
+    inline bool gather(VID dst, uint32_t val) {
 		uint32_t orig_id = ids[dst];
-		if (ids[src] < orig_id) {
-			ids[dst] = std::min(orig_id, ids[src]);
+		if (val < orig_id) {
+			ids[dst] = val;
 		}
 		return 1;
-	}
-
-	inline bool updateAtomic(VID src, VID dst) {
-		uint32_t orig_id = ids[dst];
-		writeMin(&ids[dst], ids[src]);
-		return 1;
-	}
+    }
 
 	inline bool cond(VID dst) {
 		return 1;
@@ -85,6 +93,7 @@ struct WCC_Shortcut {
 int main(int argc, char **argv) {
 	AgileStart(argc, argv);
 	Runtime runtime(numComputeThreads, numIoThreads, ioBufferSize * MB);
+    runtime.initBinning(binningRatio);
 
 	Graph outGraph;
 	outGraph.BuildGraph(outIndexFilename, outAdjFilenames);
@@ -99,6 +108,12 @@ int main(int argc, char **argv) {
 	ids.allocate(n);
 	prev_ids.allocate(n);
 
+    // Allocate bins
+    unsigned nthreads = galois::getActiveThreads();
+    uint64_t binSpaceBytes = (uint64_t)binSpace * MB;
+    Bins *bins = new Bins(outGraph, nthreads, binSpaceBytes,
+                          binCount, binBufSize, binningRatio);
+
 	galois::do_all(galois::iterate(outGraph),
                      [&](const VID& node) {
                          prev_ids[node] = node;
@@ -112,8 +127,10 @@ int main(int argc, char **argv) {
 	time.start();
 
 	while (!active->empty()) {
-		edgeMap(outGraph, active, WCC_F(ids), no_output);
-		edgeMap(inGraph, active, WCC_F(ids), no_output);
+		edgeMap(outGraph, active, WCC_F(ids, bins), no_output | prop_blocking);
+        bins->reset();
+		edgeMap(inGraph, active, WCC_F(ids, bins), no_output | prop_blocking);
+        bins->reset();
 		Worklist<VID>* output = vertexFilter(outGraph, WCC_Shortcut(ids, prev_ids));
 		delete active;
 		active = output;
@@ -121,6 +138,8 @@ int main(int argc, char **argv) {
 	delete active;
 
 	time.stop();
+
+    delete bins;
 
 	findLargest(outGraph, ids);
 

@@ -75,7 +75,7 @@ if __name__ == "__main__":
     parser.add_argument('--max_iterations', default=1000, type=int,
                       help='Max iterations for PageRank and SpMV (default: 1000)')
 
-	# For binning
+    # For binning
     parser.add_argument('--bin_size', default=256, type=int,
                       help='Bin size in MB (default: 256)')
     parser.add_argument('--bin_count', default=1024, type=int,
@@ -129,11 +129,11 @@ if __name__ == "__main__":
         os.makedirs(path)
 
     if args.kernel.endswith('_sync'):
-    	result_file = f'{path}/{dataset}_{data_format}_{threads}_{num_disks}.txt'
-	else:
-		b = int(threads * bin_ratio)
-		a = threads - b
-		result_file = f'{path}/{dataset}_{data_format}_{threads}_{num_disks}__{bin_count}_{b}_{a}__{bin_size}.txt'
+        result_file = f'{path}/{dataset}_{data_format}_{threads}_{num_disks}.txt'
+    else:
+        b = int(threads * bin_ratio)
+        a = threads - b
+        result_file = f'{path}/{dataset}_{data_format}_{threads}_{num_disks}__{bin_count}_{b}_{a}__{bin_size}.txt'
 
     if not args.force and os.path.exists(result_file):
         print(f'{result_file} exists.')

@@ -28,26 +28,6 @@ static cll::opt<unsigned int>
                 cll::desc("Maximum iterations (default: 20)"),
                 cll::init(MAX_ITER));
 
-static cll::opt<unsigned int>
-        binSpace("binSpace",
-                cll::desc("Size of bin space in MB (default: 256)"),
-                cll::init(256));
-
-static cll::opt<int>
-        binCount("binCount",
-                cll::desc("Number of bins (default: 4096)"),
-                cll::init(BIN_COUNT));
-
-static cll::opt<int>
-        binBufSize("binBufSize",
-                cll::desc("Size of a bin buffer (default: 128)"),
-                cll::init(BIN_BUF_SIZE));
-
-static cll::opt<float>
-        binningRatio("binningRatio",
-                cll::desc("Binning worker ratio (default: 0.67)"),
-                cll::init(BINNING_WORKER_RATIO));
-
 struct Node {
     float value, ngh_sum;
 };
@@ -57,16 +37,27 @@ struct SPMV_F : public EDGEMAP_F<float> {
     Graph& graph;
     Array<Node>& data;
 
-    SPMV_F(Graph& g, Array<Node>& d, Bins* b):
-        graph(g), data(d), EDGEMAP_F(b)
+    SPMV_F(Graph& g, Array<Node>& d):
+        graph(g), data(d)
     {}
 
-    inline float scatter(VID src, VID dst) {
-        return data[src].value * 2.0;
+    inline bool update(VID src, VID dst) {
+        float oldVal = data[dst].ngh_sum;
+        data[dst].ngh_sum += data[src].value * 2.0;
+        return oldVal == 0;
     }
 
-    inline bool gather(VID dst, float val) {
-        data[dst].ngh_sum += val;
+    inline bool updateAtomic(VID src, VID dst) {
+        float oldV, newV;
+        do {
+            oldV = data[dst].ngh_sum;
+            newV = oldV + data[src].value * 2.0;
+        } while (!compare_and_swap(data[dst].ngh_sum, oldV, newV));
+
+        return oldV == 0.0;
+    }
+
+    inline bool cond (VID dst) {
         return 1;
     }
 };
@@ -99,7 +90,6 @@ struct SPMV_VertexApply {
 int main(int argc, char **argv) {
     AgileStart(argc, argv);
     Runtime runtime(numComputeThreads, numIoThreads, ioBufferSize * MB);
-    runtime.initBinning(binningRatio);
 
     Graph outGraph;
     outGraph.BuildGraph(outIndexFilename, outAdjFilenames);
@@ -108,12 +98,6 @@ int main(int argc, char **argv) {
 
     Array<Node> data;
     data.allocate(n);
-
-    // Allocate bins
-    unsigned nthreads = galois::getActiveThreads();
-    uint64_t binSpaceBytes = (uint64_t)binSpace * MB;
-    Bins *bins = new Bins(outGraph, nthreads, binSpaceBytes,
-                          binCount, binBufSize, binningRatio);
 
     // Initialize values
     vertexMap(outGraph, SPMV_Vertex_Init(data));
@@ -124,13 +108,11 @@ int main(int argc, char **argv) {
     long iter = 0;
 
     while (iter++ < maxIterations) {
-        edgeMap(outGraph, SPMV_F(outGraph, data, bins), no_output | prop_blocking);
+        edgeMap(outGraph, SPMV_F(outGraph, data), no_output);
         vertexFilter(outGraph, SPMV_VertexApply(data));
     }
 
     time.stop();
-
-    delete bins;
 
     return 0;
 }

@@ -17,6 +17,7 @@
 #include "VertexFilter.h"
 #include "PageRank.h"
 #include "Bin.h"
+#include "Param.h"
 
 using namespace blaze;
 namespace cll = llvm::cl;
@@ -45,6 +46,26 @@ static cll::opt<unsigned int>
                 cll::desc("Maximum iterations"),
                 cll::init(MAX_ITER));
 
+static cll::opt<unsigned int>
+        binSpace("binSpace",
+                cll::desc("Size of bin space in MB (default: 256)"),
+                cll::init(256));
+
+static cll::opt<int>
+        binCount("binCount",
+                cll::desc("Number of bins (default: 4096)"),
+                cll::init(BIN_COUNT));
+
+static cll::opt<int>
+        binBufSize("binBufSize",
+                cll::desc("Size of a bin buffer (default: 128)"),
+                cll::init(BIN_BUF_SIZE));
+
+static cll::opt<float>
+        binningRatio("binningRatio",
+                cll::desc("Binning worker ratio (default: 0.67)"),
+                cll::init(BINNING_WORKER_RATIO));
+
 struct Node {
     float score, delta, ngh_sum;
 };
@@ -54,28 +75,17 @@ struct PR_F : public EDGEMAP_F<float> {
     Graph& graph;
     Array<Node>& data;
 
-    PR_F(Graph& g, Array<Node>& d):
-        graph(g), data(d)
+    PR_F(Graph& g, Array<Node>& d, Bins* b):
+        graph(g), data(d), EDGEMAP_F(b)
     {}
 
-    inline bool update(VID src, VID dst) {
-        float oldVal = data[dst].ngh_sum;
-        data[dst].ngh_sum += data[src].delta / graph.GetDegree(src);
-        return oldVal == 0;
+    inline float scatter(VID src, VID dst) {
+        return data[src].delta / graph.GetDegree(src);
     }
 
-    inline bool updateAtomic(VID src, VID dst) {
-        float oldV, newV;
-        do {
-            oldV = data[dst].ngh_sum;
-            newV = oldV + data[src].delta / graph.GetDegree(src);
-        } while (!compare_and_swap(data[dst].ngh_sum, oldV, newV));
-
-        return oldV == 0.0;
-    }
-
-    inline bool cond (VID dst) {
-        return 1;
+    inline bool gather(VID dst, float val) {
+        data[dst].ngh_sum += val;
+        return true;
     }
 };
 
@@ -137,7 +147,7 @@ struct PR_VertexApply {
     }
 };
 
-struct PR_TotalDelta{
+struct PR_TotalDelta {
     Array<Node>& data;
     galois::GAccumulator<float>& total_delta;
 
@@ -154,6 +164,7 @@ struct PR_TotalDelta{
 int main(int argc, char **argv) {
     AgileStart(argc, argv);
     Runtime runtime(numComputeThreads, numIoThreads, ioBufferSize * MB);
+    runtime.initBinning(binningRatio);
 
     Graph outGraph;
     outGraph.BuildGraph(outIndexFilename, outAdjFilenames);
@@ -163,6 +174,12 @@ int main(int argc, char **argv) {
 
     Array<Node> data;
     data.allocate(n);
+
+    // Allocate bins
+    unsigned nthreads = galois::getActiveThreads();
+    uint64_t binSpaceBytes = (uint64_t)binSpace * MB;
+    Bins *bins = new Bins(outGraph, nthreads, binSpaceBytes,
+                          binCount, binBufSize, binningRatio);
 
     Worklist<VID>* frontier = new Worklist<VID>(n);
     frontier->activate_all();
@@ -177,18 +194,20 @@ int main(int argc, char **argv) {
 
     long iter = 0;
 
-    while (!frontier->empty() && iter++ < maxIterations) {
-        edgeMap(outGraph, frontier, PR_F(outGraph, data), no_output);
+    while (iter++ < maxIterations) {
+        edgeMap(outGraph, frontier, PR_F(outGraph, data, bins), no_output | prop_blocking);
         Worklist<VID>* active = (iter == 1) ?
                                 vertexFilter(outGraph, PR_VertexApply_FirstRound(data, damping, one_over_n, epsilon)) :
                                 vertexFilter(outGraph, PR_VertexApply(data, damping, epsilon));
 
-        //vertexMap(outGraph, PR_TotalDelta(data, totalDelta));
-        //if (totalDelta.reduce() < epsilon2) break;
-        //totalDelta.reset();
+        vertexMap(outGraph, PR_TotalDelta(data, totalDelta));
+        if (totalDelta.reduce() < epsilon2) break;
+        totalDelta.reset();
 
         delete frontier;
         frontier = active;
+
+        bins->reset();
     }
 
     delete frontier;
@@ -196,6 +215,8 @@ int main(int argc, char **argv) {
     time.stop();
 
     printTop(data);
+
+    delete bins;
 
     return 0;
 }

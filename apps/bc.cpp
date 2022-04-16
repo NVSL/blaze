@@ -31,58 +31,61 @@ static cll::opt<std::string>
 static cll::list<std::string>
     inAdjFilenames("inAdjFilenames", cll::desc("<in adj files>"), cll::OneOrMore);
 
+static cll::opt<unsigned int>
+        binSpace("binSpace",
+                cll::desc("Size of bin space in MB (default: 256)"),
+                cll::init(256));
 
-struct Node {
-    float num_paths;
-    float dependencies;
-    float inverse_num_paths;
-    bool visited;
-};
+static cll::opt<int>
+        binCount("binCount",
+                cll::desc("Number of bins (default: 4096)"),
+                cll::init(BIN_COUNT));
 
-struct BC_F : public EDGEMAP_F<uint32_t> {
+static cll::opt<int>
+        binBufSize("binBufSize",
+                cll::desc("Size of a bin buffer (default: 128)"),
+                cll::init(BIN_BUF_SIZE));
+
+static cll::opt<float>
+        binningRatio("binningRatio",
+                cll::desc("Binning worker ratio (default: 0.67)"),
+                cll::init(BINNING_WORKER_RATIO));
+
+
+struct BC_F : public EDGEMAP_F<float> {
     Array<float>& num_paths;
     Bitmap& visited;
 
-    BC_F(Array<float>& n, Bitmap& v): num_paths(n), visited(v) {}
+    BC_F(Array<float>& n, Bitmap& v, Bins* b): num_paths(n), visited(v), EDGEMAP_F(b) {}
 
-    inline bool update(VID src, VID dst) {
+    inline float scatter(VID src, VID dst) {
+        return num_paths[src];
+    }
+
+    inline bool gather(VID dst, float val) {
         float oldV = num_paths[dst];
-        num_paths[dst] += num_paths[src];
+        num_paths[dst] += val;
         return oldV == 0.0;
-    } 
-
-    inline bool updateAtomic(VID src, VID dst) {
-        float oldV, newV;
-        do {
-            oldV = num_paths[dst];
-            newV = oldV + num_paths[src];
-        } while (!compare_and_swap(num_paths[dst], oldV, newV));
-        return oldV == 0.0;
-    } 
+    }
 
     inline bool cond(VID dst) {
         return !visited.get_bit(dst);
     }
 };
 
-struct BC_Back_F : public EDGEMAP_F<uint32_t> {
+struct BC_Back_F : public EDGEMAP_F<float> {
     Array<float>& dependencies;
     Bitmap& visited;
 
-    BC_Back_F(Array<float>& d, Bitmap& v): dependencies(d), visited(v) {}
+    BC_Back_F(Array<float>& d, Bitmap& v, Bins* b): dependencies(d), visited(v), EDGEMAP_F(b) {}
 
-    inline bool update(VID src, VID dst) {
-        float oldV = dependencies[dst];
-        dependencies[dst] += dependencies[src];
-        return oldV == 0.0;
+    inline float scatter(VID src, VID dst) {
+        return dependencies[src];
     }
 
-    inline bool updateAtomic(VID src, VID dst) {
-        float oldV, newV;
-        do {
-            oldV = dependencies[dst];
-            newV = oldV + dependencies[src];
-        } while (!compare_and_swap(dependencies[dst], oldV, newV));
+    inline bool gather(VID dst, float val) {
+        float oldV = dependencies[dst];
+        dependencies[dst] += val;
         return oldV == 0.0;
     }
 
@@ -150,6 +153,7 @@ void printTopBC(Array<float>& dependencies, unsigned topn = PRINT_TOP) {
 int main(int argc, char **argv) {
     AgileStart(argc, argv);
     Runtime runtime(numComputeThreads, numIoThreads, ioBufferSize * MB);
+    runtime.initBinning(binningRatio);
 
     // Out graph
     Graph outGraph;
@@ -173,6 +177,12 @@ int main(int argc, char **argv) {
     Bitmap visited(n);
     visited.reset_parallel();
 
+    // Allocate bins
+    unsigned nthreads = galois::getActiveThreads();
+    uint64_t binSpaceBytes = (uint64_t)binSpace * MB;
+    Bins *bins = new Bins(outGraph, nthreads, binSpaceBytes,
+                          binCount, binBufSize, binningRatio);
+
     galois::StatTimer time("Time", "BC_MAIN");
     time.start();
 
@@ -193,7 +203,7 @@ int main(int argc, char **argv) {
     long round = 0;
     while (!frontier->empty()) {
         round++;
-        Worklist<VID>* output = edgeMap(outGraph, frontier, BC_F(num_paths, visited), 0);
+        Worklist<VID>* output = edgeMap(outGraph, frontier, BC_F(num_paths, visited, bins), prop_blocking);
         vertexMap(output, BC_Vertex_F(visited));
         levels.push_back(output);
         frontier = output;
@@ -213,9 +223,12 @@ int main(int argc, char **argv) {
     frontier = levels[round-1];
     vertexMap(frontier, BC_Back_Vertex_F(dependencies, inverse_num_paths, visited));
 
+    // reuse bin
+    bins->reset();
+
     // backward phase
     for (long r = round - 2; r >= 0; r--) {
-        edgeMap(inGraph, frontier, BC_Back_F(dependencies, visited), no_output);
+        edgeMap(inGraph, frontier, BC_Back_F(dependencies, visited, bins), no_output | prop_blocking);
         delete frontier;
         frontier = levels[r];
         vertexMap(frontier, BC_Back_Vertex_F(dependencies, inverse_num_paths, visited));
@@ -231,6 +244,8 @@ int main(int argc, char **argv) {
     time.stop();
 
     printTopBC(dependencies);
+
+    delete bins;
 
     return 0;
 }

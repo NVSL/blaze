@@ -29,7 +29,7 @@ def get_index_file_name(disks, dataset, data_format):
     return "{0}/{1}.{2}.index".format(disks[0], dataset, data_format)
 
 def get_adj_file_names(disks, dataset, data_format):
-    return ["{0}/{1}.{2}.adj.{3}".format(disk, dataset, data_format, i) for i, disk in enumerate(disks)]
+    return ["{0}/{1}.{2}.adj.{3}.{4}".format(disk, dataset, data_format, len(disks), i) for i, disk in enumerate(disks)]
 
 def build_command(args, data_format):
     cmd = BLAZE_BINARY_PATH + "/" + args.kernel
